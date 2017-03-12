@@ -11,12 +11,17 @@ public class TurretManager : MonoBehaviour {
     public Ease RotateEaseFunction; // 宣告Dotween函式庫中的Ease 名稱為RotateEaseFunction
     public float rotateDuration; // 宣告浮點數
 
+    public Camera GameCamera; // 宣告Camera型態 GameCamera
+    public float CameraShakeDuration; // 宣告浮點數 CameraShakeDuration
+    public float CameraShakeStrenth; // 宣告浮點數 CameraShakeStrenth
+
     void Start () {
         _animator = this.GetComponent<Animator>(); // 指定Turret物件中的Animator元件進來
 	}
 
     private void PlayShootAnimation(){ // 自行定義一個 PlayShootAnimation 函式
         _animator.SetTrigger("Shoot"); // 觸發Animator狀態機中的 Trigger - Shoot
+        GameCamera.transform.DOShakePosition(CameraShakeDuration, CameraShakeStrenth); // 讓相機有震動的功能
     }
 
     private void PlayRotateAnimation() // 控制Turret的旋轉
