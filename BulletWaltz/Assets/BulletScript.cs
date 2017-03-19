@@ -6,7 +6,9 @@ public class BulletScript : MonoBehaviour {
 
     private Rigidbody2D rigidbody2D; // Ridigbody2D元件
     private SpriteRenderer spriteRenderer; // SpriteRenderer元件
-    private float speed = 5; // 設定速度5
+
+    private float speed = 2; // 設定速度2 讓子彈慢一點
+
 
     public void InitAndShoot(Vector2 direction) // 外部函式
     {
@@ -18,6 +20,15 @@ public class BulletScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+        if (rigidbody2D.velocity == Vector2.zero) // 當子彈停下來 速度為0
+        {
+            //確保沒有人停下來
+            rigidbody2D.velocity = new Vector2(Random.Range(0, 1.0f), Random.Range(0, 1.0f)).normalized * speed; // X Y 隨機方向 給一個速度2
+        }
+        else
+        {
+            //確保碰撞後速度不變
+            rigidbody2D.velocity = rigidbody2D.velocity.normalized * speed; // 保持同一個方向的速度
+        }
     }
 }
