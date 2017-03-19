@@ -15,6 +15,9 @@ public class TurretManager : MonoBehaviour {
     public float CameraShakeDuration; // 宣告浮點數 CameraShakeDuration
     public float CameraShakeStrenth; // 宣告浮點數 CameraShakeStrenth
 
+    public GameObject bulletCandidate; // 宣告遊戲物件GameObject  bulletCandidate
+    private float bulletOffset = 0.6f; // 宣告浮點數 bulletOffset
+
     void Start () {
         _animator = this.GetComponent<Animator>(); // 指定Turret物件中的Animator元件進來
 	}
@@ -22,6 +25,14 @@ public class TurretManager : MonoBehaviour {
     public void PlayShootAnimation(){ // 自行定義一個 PlayShootAnimation 函式
         _animator.SetTrigger("Shoot"); // 觸發Animator狀態機中的 Trigger - Shoot
         GameCamera.transform.DOShakePosition(CameraShakeDuration, CameraShakeStrenth); // 讓相機有震動的功能
+
+        GameObject bulletobj = GameObject.Instantiate(bulletCandidate); // 動態生成 bulletCandidate (就是BulletCandidate預置物)
+        BulletScript bulletScript = bulletobj.GetComponent<BulletScript>(); // 從動態生成bulletCandidate物件上 擷取物件上的BulletScript
+        bulletScript.transform.position = this.transform.position + bulletOffset * this.gameObject.transform.right; // 子彈的位置 = 子彈目前位置 + 0.6f * Turret物件的X軸 (1,0,0)
+        bulletScript.transform.rotation = this.transform.rotation; // 子彈的旋轉值 = 大砲物件的旋轉值
+        Vector3 shootDirection3D = this.gameObject.transform.right; // Vector3 shootDirection3D 為 Turret物件的X軸 
+        Vector2 shootDirection2D = new Vector2(shootDirection3D.x, shootDirection3D.y); // 將 shootDirection3D X 和 Y 指定給 Vector2 shootDirection2D
+        bulletScript.InitAndShoot(shootDirection2D); // 執行 bulletScript.cs 程式中的 InitAndShoot 程式 給定方向 shootDirection2D 讓程式帶入計算
     }
 
     public void PlayRotateAnimation() // 控制Turret的旋轉
