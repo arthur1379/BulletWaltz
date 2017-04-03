@@ -12,6 +12,13 @@ public class FollowTheBeat : MonoBehaviour {
     private float shootCounter = -0.5f - beatPeriod * 3; //前面三次拍點不做事，延遲0.5秒發射
 
     private TurretManager turret; // TurretManager.cs 的程式
+
+    public void Reset()
+    {
+        shootCounter = -0.5f - beatPeriod * 3;
+        rotateCounter = 0.2f;
+    }
+
     // Use this for initialization
     void Start()
     {
